@@ -21,6 +21,67 @@ import "../style/index.css";
         country: null,
         city: null
     }
+
+    function render(variables = {}) {
+  console.log("These are the current variables: ", variables); //print on the console
+  // here we ask the logical questions to make decisions on how to build the html
+  // if includeCover==false then we reset the cover code without the <img> tag to make the cover transparent.
+  let cover = (
+    <div class="cover">
+      <img src="${variables.background}" />
+    </div>
+  );
+  if (variables.includeCover == false) cover = "<div class='cover'></div>";
+
+  const socialMediaLinks = [
+    {
+      name: variables.twitter  "Twitter",
+      href: "https://twitter.com/4geeksacademy",
+      class: "fab fa-twitter"
+    },
+    {
+      name: variables.facebook  "Facebook",
+      href: "https://github.com/4geeksacademy",
+      class: "fab fa-github"
+    },
+    {
+      name: variables.instagram  "Instagram",
+      href: "https://instagram.com/4geeksacademy",
+      class: "fab fa-instagram"
+    },
+    {
+      name: variables.youtube  "Youtube",
+      href: "https://youtube.com/4geeksacademy",
+      class: "fab fa-youtube"
+    }
+  ];
+
+  const titles = [
+    variables.title  "Title" + ", " + variables.lastname  "Last Name",
+    variables.role  "Role",
+    variables.city  "City" + ", " + variables.country || "Country"
+  ];
+
+  // reset the website body with the new html output
+  document.querySelector("#widget_content").innerHTML = (
+    <div class="widget">
+      ${cover}
+      <img src="${variables.avatarURL}" class="photo" />
+      {titles.map((title) => (
+        <h1>${title}</h1>
+      ))}
+      <ul class={variables.socialMediaPosition}>
+        {socialMediaLinks.map((item) => (
+          <li>
+            <a href={item.href}>
+              <i class={item.class}> {item.name} </i>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
  */
 function render(variables = {}) {
   console.log("These are the current variables: ", variables); //print on the console
@@ -33,14 +94,22 @@ function render(variables = {}) {
   document.querySelector("#widget_content").innerHTML = `<div class="widget">
             ${cover}
           <img src="${variables.avatarURL}" class="photo" />
-          <h1>Lucy Boilett</h1>
-          <h2>Web Developer</h2>
-          <h3>Miami, USA</h3>
-          <ul class="position-right">
-            <li><a href="https://twitter.com/4geeksacademy"><i class="fab fa-twitter"></i></a></li>
-            <li><a href="https://github.com/4geeksacademy"><i class="fab fa-github"></i></a></li>
-            <li><a href="https://linkedin.com/4geeksacademy"><i class="fab fa-linkedin"></i></a></li>
-            <li><a href="https://instagram.com/4geeksacademy"><i class="fab fa-instagram"></i></a></li>
+          <h1>${variables.name || " "} ${variables.lastname || " "}</h1>
+          <h2>${variables.role || " "}</h2>
+          <h3>${variables.city || " "}, ${variables.country || " "}</h3>
+          <ul class="${variables.socialMediaPosition}">
+            <li><a href="https://twitter.com/${
+              variables.twitter
+            }"><i class="fa-brands fa-twitter"></i></i></a></li>
+            <li><a href="https://github.com/${
+              variables.github
+            }"><i class="fab fa-github"></i></a></li>
+            <li><a href="https://linkedin.com/${
+              variables.linkedin
+            }"><i class="fab fa-linkedin"></i></a></li>
+            <li><a href="https://instagram.com/${
+              variables.instagram
+            }"><i class="fab fa-instagram"></i></a></li>
           </ul>
         </div>
     `;
@@ -52,16 +121,16 @@ function render(variables = {}) {
 window.onload = function() {
   window.variables = {
     // if includeCover is true the algorithm should
-    includeCover: true,
+    includeCover: false,
     // this is the url of the image that will used as background for the profile cover
     background: "https://images.unsplash.com/photo-1511974035430-5de47d3b95da",
     // this is the url for the profile avatar
     avatarURL: "https://randomuser.me/api/portraits/women/42.jpg",
     // social media bar position (left or right)
-    socialMediaPosition: "position-left",
+    socialMediaPosition: "position-right",
     // social media usernames
     twitter: null,
-    github: "alesanchezr",
+    github: null,
     linkedin: null,
     instagram: null,
     name: null,
